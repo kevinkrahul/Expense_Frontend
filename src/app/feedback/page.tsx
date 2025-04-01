@@ -25,7 +25,7 @@ const customerSchema = z.object({
     .max(250, { message: "Comments must be less than 250 characters" }),
 });
 
-const customersurvey = () => {
+const Customersurvey = () => {
   const [loading, setLoading] = useState(false);
 
   const {
@@ -102,7 +102,7 @@ const customersurvey = () => {
                     )}
                   </div>
                   <Button type="submit" variant={"outline"} className="w-full">
-                    Submit
+                    {loading?"Submitting":"Submit"}
                   </Button>
                 </div>
               </form>
@@ -114,4 +114,4 @@ const customersurvey = () => {
   );
 };
 
-export default customersurvey;
+export default Customersurvey;

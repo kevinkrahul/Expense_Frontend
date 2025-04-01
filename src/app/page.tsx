@@ -29,7 +29,6 @@ const FormSchema = z.object({
 });
 
 export default function Home() {
-  const [input, setInput] = useState("");
   const [messages, setMessages] = useState<Message[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
@@ -129,7 +128,6 @@ export default function Home() {
       ]);
     } finally {
       setIsLoading(false);
-      setInput("");
       form.reset();
     }
   };
