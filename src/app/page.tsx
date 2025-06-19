@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { v4 as uuidv4 } from "uuid";
 import { Loader2 } from "lucide-react";
 import { TypingAnimation } from "@/components/ui/typing-animation";
+import ReactMarkdown from "react-markdown";
 
 type Message = {
   text: string;
@@ -104,10 +105,10 @@ export default function Home() {
     setIsLoading(true);
 
     try {
-      const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL || "";
+      const SERVER_URL = "http://127.0.0.1:5000";
       const response = await axios.post(SERVER_URL, {
         message: data.message,
-        session_id: sessionId, // Sending session ID along with user input
+        // session_id: sessionId, // Sending session ID along with user input
       });
 
       setMessages([
@@ -130,6 +131,7 @@ export default function Home() {
       setIsLoading(false);
       form.reset();
     }
+
   };
 
   return (
@@ -159,18 +161,20 @@ export default function Home() {
                   >
                     <span className="text-sm md:text-base font-mono">
                       {message.isBot ? (
-                        messages.length - 1 === index ? (
+                        messages?.length - 1 === index ? (
                           <TypingAnimation
                             duration={20}
                             className="text-sm md:text-base font-bold"
                           >
-                            {message.text}
+                            {/* <ReactMarkdown> */}
+                              {message.text}
+                              {/* </ReactMarkdown> */}
                           </TypingAnimation>
-                        ) : (
-                          message.text
+                        ) : (<ReactMarkdown>{message.text}</ReactMarkdown>
+                          
                         )
                       ) : (
-                        message.text
+                        <ReactMarkdown>{message.text}</ReactMarkdown>
                       )}
                     </span>
                   </div>
