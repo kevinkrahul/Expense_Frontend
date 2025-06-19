@@ -10,6 +10,10 @@ const Header = () => {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
+  const handleLogout=()=>{
+    localStorage.removeItem("token");
+    window.location.href = "/signup";
+  }
   useEffect(() => {
     setMounted(true);
   }, []);
@@ -33,11 +37,11 @@ const Header = () => {
       </Link>
       <div className="flex items-center gap-1 md:gap-3 mr-2 md:mr-6">
         <div>
-          <Link href={"/feedback"}>
-            <Button variant={"outline"} className="max-sm:text-xs">
-              <AnimatedShinyText shimmerWidth={100}>Feedback</AnimatedShinyText>
+          {/* <Link href={"/signup"}> */}
+            <Button variant={"outline"} onClick={handleLogout} className="max-sm:text-xs">
+              <AnimatedShinyText shimmerWidth={100}>Logout</AnimatedShinyText>
             </Button>
-          </Link>
+          {/* </Link> */}
         </div>
         <div>
           {mounted && (

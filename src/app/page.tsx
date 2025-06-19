@@ -17,6 +17,7 @@ import { v4 as uuidv4 } from "uuid";
 import { Loader2 } from "lucide-react";
 import { TypingAnimation } from "@/components/ui/typing-animation";
 import ReactMarkdown from "react-markdown";
+import Link from "next/link";
 
 type Message = {
   text: string;
@@ -31,6 +32,7 @@ const FormSchema = z.object({
 
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([]);
+  const [tok, setTok] = useState<boolean>(true);
   const [isLoading, setIsLoading] = useState(false);
   const [sessionId, setSessionId] = useState<string | null>(null);
   const chatContainerRef = useRef<HTMLDivElement>(null);
@@ -97,33 +99,46 @@ export default function Home() {
     }
   }, [messages]);
 
+  //Form Submit
   const handleSubmit = async (data: z.infer<typeof FormSchema>) => {
     if (!data.message.trim() || !sessionId) return;
 
     const newMessages = [...messages, { text: data.message, isBot: false }];
     setMessages(newMessages);
     setIsLoading(true);
-
+    const token = localStorage.getItem("token");
+    if (token !== null) {
+      setTok(true);
+    } else {
+      setTok(false);
+    }
     try {
       const SERVER_URL = "http://127.0.0.1:5000";
-      const response = await axios.post(SERVER_URL, {
-        message: data.message,
-        // session_id: sessionId, // Sending session ID along with user input
-      });
+      const response = await axios.post(
+        SERVER_URL,
+        {
+          message: data.message,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
 
       setMessages([
         ...newMessages,
         { text: response.data.response, isBot: true },
       ]);
     } catch (error: any) {
-      console.error(
-        "API Error:",
-        error.response ? error.response.data : error.message
-      );
+      // console.error(
+      //   "API Error:",
+      //   error.response ? error.response.data : error.message
+      // );
       setMessages([
         ...newMessages,
         {
-          text: "Sorry, I'm having trouble connecting. Please try again later!",
+          text: `Sorry, I'm having trouble connecting. ${error.message}`,
           isBot: true,
         },
       ]);
@@ -131,7 +146,6 @@ export default function Home() {
       setIsLoading(false);
       form.reset();
     }
-
   };
 
   return (
@@ -167,11 +181,11 @@ export default function Home() {
                             className="text-sm md:text-base font-bold"
                           >
                             {/* <ReactMarkdown> */}
-                              {message.text}
-                              {/* </ReactMarkdown> */}
+                            {message.text}
+                            {/* </ReactMarkdown> */}
                           </TypingAnimation>
-                        ) : (<ReactMarkdown>{message.text}</ReactMarkdown>
-                          
+                        ) : (
+                          <ReactMarkdown>{message.text}</ReactMarkdown>
                         )
                       ) : (
                         <ReactMarkdown>{message.text}</ReactMarkdown>
@@ -213,32 +227,44 @@ export default function Home() {
                   <FormItem>
                     <FormControl>
                       <div className="relative ">
-                        <Input
-                          {...field}
-                          placeholder="Ask about any  music..."
-                          className="relative bg-neutal-50 dark:bg-neutral-600 h-12 max-sm:text-sm mr-2
+                        {tok ? (
+                          <>
+                            <Input
+                              {...field}
+                              placeholder="Ask about any  music..."
+                              className="relative bg-neutal-50 dark:bg-neutral-600 h-12 max-sm:text-sm mr-2
                         border border-solid rounded-xl p-3
                         shadow-lg
                       "
-                          style={{ width: "clamp(200px,60vw,800px)" }}
-                        />
-                        <button
-                          type="submit"
-                          className="absolute right-5 top-1/2 transform -translate-y-1/2"
-                        >
-                          <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            viewBox="0 0 24 24"
-                            fill="currentColor "
-                            className=" w-11 h-11 dark:hover:text-neutral-200/70 text-neutral-300 hover:text-neutral-800 dark:text-white"
-                          >
-                            <path
-                              fillRule="evenodd"
-                              d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm4.28 10.28a.75.75 0 0 0 0-1.06l-3-3a.75.75 0 1 0-1.06 1.06l1.72 1.72H8.25a.75.75 0 0 0 0 1.5h5.69l-1.72 1.72a.75.75 0 1 0 1.06 1.06l3-3Z"
-                              clipRule="evenodd"
+                              style={{ width: "clamp(200px,60vw,800px)" }}
                             />
-                          </svg>
-                        </button>
+                            <button
+                              type="submit"
+                              className="absolute right-5 top-1/2 transform -translate-y-1/2"
+                            >
+                              <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                viewBox="0 0 24 24"
+                                fill="currentColor "
+                                className=" w-11 h-11 dark:hover:text-neutral-200/70 text-neutral-300 hover:text-neutral-800 dark:text-white"
+                              >
+                                <path
+                                  fillRule="evenodd"
+                                  d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm4.28 10.28a.75.75 0 0 0 0-1.06l-3-3a.75.75 0 1 0-1.06 1.06l1.72 1.72H8.25a.75.75 0 0 0 0 1.5h5.69l-1.72 1.72a.75.75 0 1 0 1.06 1.06l3-3Z"
+                                  clipRule="evenodd"
+                                />
+                              </svg>
+                            </button>
+                          </>
+                        ) : (
+                          <Link href="/login">
+                          <div className="relative bg-neutral-300 text-center dark:bg-neutral-600 dark:text-white h-12 max-sm:text-sm mr-2 font-extrabold
+                                border border-solid rounded-xl p-3 shadow-lg"
+                              style={{ width: "clamp(200px,60vw,800px)" }}>
+                              <span>Login to Access Expense Tracker</span>
+                          </div>
+                          </Link>
+                        )}
                       </div>
                     </FormControl>
                     <FormDescription></FormDescription>
