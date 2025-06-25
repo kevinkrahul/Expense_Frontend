@@ -34,8 +34,9 @@ import Link from "next/link";
   const handleSubmit = async()=>{
 
     try{
-        const SERVER_URL="http://localhost:5000/signup";
-        const response = await axios.post(SERVER_URL,{
+        const SERVER_URL=process.env.NEXT_PUBLIC_API_URL;
+        // || "http://172.20.0.3:8000";
+        const response = await axios.post(`${SERVER_URL}/signup`,{
             username:user,
             email:email,
             password:password

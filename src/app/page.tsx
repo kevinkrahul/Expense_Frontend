@@ -57,7 +57,7 @@ export default function Home() {
     } else {
       // Add a welcome message if no chat history exists
       const welcomeMessage: Message = {
-        text: "🎵 Hi there! I'm Music Buddy. Ask me about your favorite songs, genres, or artists! 🎶",
+        text: "Hey! 👋 I'm your expense buddy 💸 — just tell me what you earn, spend, and aim for 🎯, and I’ll help you track it all 🧾",
         isBot: true,
       };
       setMessages([welcomeMessage]);
@@ -113,9 +113,10 @@ export default function Home() {
       setTok(false);
     }
     try {
-      const SERVER_URL = "http://127.0.0.1:5000";
+      const SERVER_URL = process.env.NEXT_PUBLIC_API_URL;
+      // You can change the default URL above as needed.
       const response = await axios.post(
-        SERVER_URL,
+        `${SERVER_URL}`,
         {
           message: data.message,
         },
@@ -125,12 +126,13 @@ export default function Home() {
           },
         }
       );
-
+      console.log("API Response:", response.data);
       setMessages([
         ...newMessages,
         { text: response.data.response, isBot: true },
       ]);
     } catch (error: any) {
+      
       // console.error(
       //   "API Error:",
       //   error.response ? error.response.data : error.message
@@ -205,7 +207,7 @@ export default function Home() {
               <div className="flex justify-start">
                 <div className="max-w-[80%] p-4 rounded-2xl dark:bg-green-600/20 bg-green-100 animate-pulse flex items-center gap-2">
                   <Loader2 className="w-6 h-6 animate-spin" />
-                  <span className="font-mono">Music Buddy is Thinking...</span>
+                  <span className="font-mono">Tracking...</span>
                 </div>
               </div>
             )}

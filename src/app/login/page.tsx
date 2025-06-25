@@ -43,8 +43,9 @@ export default function VerifyOtpPage() {
 
   const onSubmit = async (data: z.infer<typeof FormSchema>) => {
     try {
-      const SERVER_URL = "http://localhost:5000/login";
-      const response = await axios.post(SERVER_URL, {
+      const SERVER_URL = process.env.NEXT_PUBLIC_API_URL ;
+      // || "http://172.20.0.3:8000";
+      const response = await axios.post(`${SERVER_URL}/login`, {
         email: data.email,
         password: data.password,
       });

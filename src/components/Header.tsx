@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import { Sun, Moon, Music2 } from "lucide-react";
+import { Sun, Moon, LineChart } from "lucide-react";
 import { useTheme } from "next-themes";
 import { Button } from "./ui/button";
 import { AnimatedShinyText } from "./ui/animated-shiny-text";
@@ -21,16 +21,16 @@ const Header = () => {
     <div className="sticky top-0 bg-inherit min-h-[7vh] flex justify-between items-center">
       <Link href={"/"}>
         <div className="flex items-center gap-2 md:gap-3 md:ml-6 p-2">
-          <div className="relative">
-            <Music2 />
-            <div className="absolute -top-1 -right-1 w-3 h-3 bg-green-400 rounded-full animate-pulse" />
+          <div className="relative flex items-center space-x-1">
+            <LineChart className="w-5 h-5 text-green-500" />
+            <div className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-green-400 rounded-full animate-pulse" />
           </div>
           <div className="flex flex-col">
             <h1 className="" style={{ fontSize: "clamp(15px,4vw,24px)" }}>
-              Music Buddy
+              Expense Tracker
             </h1>
-            <p className="ml-5" style={{ fontSize: "clamp(9px,2vw,15px)" }}>
-              Powered by Agentic AI
+            <p className="ml-5" style={{ fontSize: "clamp(7px,1vw,17px)" }}>
+              Track your expenses effortlessly
             </p>
           </div>
         </div>
