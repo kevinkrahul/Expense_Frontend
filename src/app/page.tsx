@@ -63,6 +63,13 @@ export default function Home() {
       setMessages([welcomeMessage]);
       sessionStorage.setItem("chat_history", JSON.stringify([welcomeMessage]));
     }
+    // Check if the user is logged in
+    const token = localStorage.getItem("token");
+    if (token !== null) {
+      setTok(true);
+    } else {
+      setTok(false);
+    }
   }, []);
 
   useEffect(() => {
@@ -106,12 +113,11 @@ export default function Home() {
     const newMessages = [...messages, { text: data.message, isBot: false }];
     setMessages(newMessages);
     setIsLoading(true);
-    const token = localStorage.getItem("token");
-    if (token !== null) {
-      setTok(true);
-    } else {
-      setTok(false);
+    let token = localStorage.getItem("token");
+    if (token === null) {
+      token = "empty-token";
     }
+    
     try {
       const SERVER_URL = process.env.NEXT_PUBLIC_API_URL;
       // You can change the default URL above as needed.
@@ -141,7 +147,8 @@ export default function Home() {
       setMessages([
         ...newMessages,
         {
-          text: `Sorry, I'm having trouble connecting. ${error.message}`,
+          text: "Sorry, I'm having trouble connecting. Login Failed:",
+          // ${error.message}`
           isBot: true,
         },
       ]);
@@ -234,7 +241,7 @@ export default function Home() {
                           <>
                             <Input
                               {...field}
-                              placeholder="Ask about any  music..."
+                              placeholder="Ask about your personal expenses..."
                               className="relative bg-neutal-50 dark:bg-neutral-600 h-12 max-sm:text-sm mr-2
                         border border-solid rounded-xl p-3
                         shadow-lg
@@ -261,7 +268,7 @@ export default function Home() {
                           </>
                         ) : (
                           <Link href="/login">
-                          <div className="relative bg-neutral-300 text-center dark:bg-neutral-600 dark:text-white h-12 max-sm:text-sm mr-2 font-extrabold
+                          <div className="relative bg-neutral-300 text-center dark:bg-neutral-600 dark:text-white h-15 min-sm:h-12 max-sm:text-sm mr-2 font-extrabold
                                 border border-solid rounded-xl p-3 shadow-lg"
                               style={{ width: "clamp(200px,60vw,800px)" }}>
                               <span>Login to Access Expense Tracker</span>
