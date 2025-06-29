@@ -8,7 +8,7 @@ import {
   FormControl,
   FormDescription,
 } from "@/components/ui/form";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import axios from "axios";
@@ -133,7 +133,7 @@ export default function Home() {
           },
         }
       );
-      console.log("API Response:", response.data);
+      // console.log("API Response:", response.data);
       setMessages([
         ...newMessages,
         { text: response.data.response, isBot: true },
@@ -144,6 +144,7 @@ export default function Home() {
       //   "API Error:",
       //   error.response ? error.response.data : error.message
       // );
+      setTok(false);
       setMessages([
         ...newMessages,
         {

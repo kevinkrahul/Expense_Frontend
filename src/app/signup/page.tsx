@@ -45,7 +45,7 @@ import Link from "next/link";
         window.location.href = "/login";
         setError("");
         localStorage.setItem("token", response.data.token);
-        console.log(response.data.token);
+        // console.log(response.data.token);
     }
     catch(error:any){
         console.error("API ERROR : ",error.response ?error.response.data:error.message);
