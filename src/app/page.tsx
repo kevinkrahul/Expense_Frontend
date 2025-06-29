@@ -57,7 +57,7 @@ export default function Home() {
     } else {
       // Add a welcome message if no chat history exists
       const welcomeMessage: Message = {
-        text: "Hey! 👋 I'm your expense buddy 💸 — just tell me what you earn, spend, and aim for 🎯, and I’ll help you track it all 🧾",
+        text: "Hey! 👋 I'm your expense buddy 💸 — just tell me what you earn, spend, and aim for 🎯, and I’ll help you track it all 🧾. 📌 Note: Use the query format — category: food, shopping, etc., and target: tea, petrol, dosa, etc. For example: 'Where did I spend the most today and on which target?' or 'How much did I spend on target tea?'",
         isBot: true,
       };
       setMessages([welcomeMessage]);
@@ -241,9 +241,9 @@ export default function Home() {
                           <>
                             <Input
                               {...field}
-                              placeholder="Ask about your personal expenses..."
-                              className="relative bg-neutal-50 dark:bg-neutral-600 h-12 max-sm:text-sm mr-2
-                        border border-solid rounded-xl p-3
+                              placeholder="Track your spending..."
+                              className="relative bg-neutral-50 dark:bg-neutral-600 h-12 max-sm:text-sm mr-2
+                        border border-solid rounded-xl p-3 pr-14
                         shadow-lg
                       "
                               style={{ width: "clamp(200px,60vw,800px)" }}
