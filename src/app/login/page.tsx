@@ -50,10 +50,12 @@ export default function VerifyOtpPage() {
         password: data.password,
       });
       const token= response.data.token;
+      const refresh_token= response.data.refresh_token;
       setSuccess("Login Successful");
       window.location.href = "/";
       setError("");
       localStorage.setItem("token", token);
+      localStorage.setItem("refresh_token", refresh_token);
       reset();
     } catch (error: any) {
       console.error(
